@@ -1,6 +1,7 @@
 CC := g++
 V20 := -std=c++20
 CFLAGS := -Wall -g $(V20) `sdl2-config --libs --cflags` 
+GLEW_HEADERS := -Iglew/include
 TARGET := main
 SRC_DIR := src
 OBJ_DIR := obj
@@ -16,11 +17,10 @@ OBJS := $(patsubst %.cpp,%.o,$(SRCS_OBJS))
 all: clean $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(V20) -o $@ $^ -lSDL2
-
+	$(CC) $(V20) $(GLEW_HEADERS)  -o $@ $^ -lSDL2 -lGL glew/lib/libGLEW.a
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(GLEW_HEADERS) -c $< -o $@
 
 clean:
 	rm -rf $(TARGET) $(OBJ_DIR)
